@@ -1,0 +1,11 @@
+# OS / Editor
+.DS_Store
+.vscode/*
+!.vscode/settings.json
+
+# Docker artifacts
+*.log
+
+# Composer (เผื่ออนาคต)
+vendor/
+composer.lock
