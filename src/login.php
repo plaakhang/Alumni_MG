@@ -1,38 +1,19 @@
 <?php
-require_once __DIR__ . '/lib/auth.php';
-require_guest();
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  $ok = login_user($_POST['email'] ?? '', $_POST['password'] ?? '');
-  if ($ok) { header('Location: /profile.php'); exit; }
+require_once __DIR__.'/../lib/auth.php';
+require_once __DIR__.'/../lib/ui.php';
+start_session();
+if($_SERVER['REQUEST_METHOD']==='POST'){
+  if(login($_POST['email']??'', $_POST['password']??'')){ flash('ok','เข้าสู่ระบบสำเร็จ'); header('Location:/'); exit; }
+  flash('err','อีเมลหรือรหัสผ่านไม่ถูกต้อง');
 }
-$flash = consume_flash();
+header_html('Login'); navbar(current_user()); render_flash();
 ?>
-<!doctype html>
-<html lang="th">
-<head>
-  <meta charset="utf-8">
-  <title>Login</title>
-  <link rel="stylesheet" href="/assets/style.css">
-</head>
-<body>
-  <nav class="nav">
-    <a href="/">Home</a>
-    <a href="/register.php">Register</a>
-  </nav>
-
-  <?php foreach($flash as $f): ?>
-    <div class="flash <?=htmlspecialchars($f['type'])?>"><?=htmlspecialchars($f['msg'])?></div>
-  <?php endforeach; ?>
-
-  <div class="card">
-    <h2>เข้าสู่ระบบ</h2>
-    <form method="post">
-      <div><input type="email" name="email" placeholder="อีเมล" required></div>
-      <div><input type="password" name="password" placeholder="รหัสผ่าน" required></div>
-      <button type="submit">เข้าสู่ระบบ</button>
-    </form>
-    <p>ลองด้วยบัญชีตัวอย่าง: <code>test@example.com</code> / <code>test1234</code></p>
-  </div>
-</body>
-</html>
+<div class="max-w-md mx-auto p-6">
+  <h1 class="text-2xl font-semibold mb-4">เข้าสู่ระบบ</h1>
+  <form method="post" class="space-y-3">
+    <input name="email" type="email" required placeholder="อีเมล" class="w-full border px-3 py-2 rounded">
+    <input name="password" type="password" required placeholder="รหัสผ่าน" class="w-full border px-3 py-2 rounded">
+    <button class="px-4 py-2 rounded bg-sky-600 text-white">เข้าสู่ระบบ</button>
+  </form>
+</div>
+<?php footer_html();

@@ -1,45 +1,24 @@
 <?php
-require_once __DIR__ . '/lib/auth.php';
-$flash = consume_flash();
+require_once __DIR__.'/../lib/auth.php';
+require_once __DIR__.'/../lib/ui.php';
+start_session();
 $user = current_user();
+header_html('Alumni WebApp'); navbar($user);
 ?>
-<!doctype html>
-<html lang="th">
-<head>
-  <meta charset="utf-8">
-  <title>Alumni WebApp</title>
-  <link rel="stylesheet" href="/assets/style.css">
-</head>
-<body>
-  <nav class="nav">
-    <a href="/">Home</a>
-    <?php if ($user): ?>
-      <a href="/profile.php">Profile</a>
-      <a href="/logout.php">Logout</a>
-    <?php else: ?>
-      <a href="/register.php">Register</a>
-      <a href="/login.php">Login</a>
-    <?php endif; ?>
-    <a href="http://localhost:8080" target="_blank">phpMyAdmin</a>
-  </nav>
-
-  <?php foreach($flash as $f): ?>
-    <div class="flash <?=htmlspecialchars($f['type'])?>"><?=htmlspecialchars($f['msg'])?></div>
-  <?php endforeach; ?>
-
-  <div class="card">
-    <h2>ยินดีต้อนรับสู่ Alumni WebApp (MVP)</h2>
-    <p>โปรเจกต์นี้เป็นโครงสร้างพื้นฐานแบบง่ายสำหรับเริ่มทำ Web Application ด้วย PHP + MySQL บน Docker</p>
-    <ul>
-      <li>สมัครสมาชิก / เข้าสู่ระบบ</li>
-      <li>หน้าโปรไฟล์อย่างง่าย</li>
-      <li>จัดการ DB ผ่าน phpMyAdmin</li>
-    </ul>
-    <?php if ($user): ?>
-      <p>สถานะ: เข้าสู่ระบบเป็น <strong><?=htmlspecialchars($user['display_name'])?></strong></p>
-    <?php else: ?>
-      <p>สถานะ: ยังไม่เข้าสู่ระบบ</p>
-    <?php endif; ?>
+<header class="max-w-5xl mx-auto px-4 mt-8">
+  <div class="rounded-xl border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/60 shadow p-8">
+    <h1 class="text-3xl font-semibold">ยินดีต้อนรับสู่ Alumni WebApp</h1>
+    <p class="mt-2 text-slate-600 dark:text-slate-300">ระบบสำหรับศิษย์เก่าพบปะ โพสต์ ข่าวสาร และโปรไฟล์</p>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a href="/posts.php" class="px-4 py-2 rounded bg-sky-600 text-white">โพสต์</a>
+      <a href="/news.php" class="px-4 py-2 rounded border">ข่าวสาร</a>
+      <a href="/search_member.php" class="px-4 py-2 rounded border">ค้นหาศิษย์เก่า</a>
+      <?php if($user): ?>
+        <a href="/profile.php" class="px-4 py-2 rounded border">โปรไฟล์ของฉัน</a>
+      <?php else: ?>
+        <a href="/register.php" class="px-4 py-2 rounded border">สมัครสมาชิก</a>
+      <?php endif; ?>
+    </div>
   </div>
-</body>
-</html>
+</header>
+<?php footer_html();
